@@ -1,0 +1,929 @@
+<div class="col-12 mb-4">
+    <form [formGroup]="compareForm" (ngSubmit)="addThenCompare()">
+        <div class="form-group">
+            <div *ngFor="let item of compareItem" class="row align-items-center">
+                <label class="col-md-5 col-form-label">
+                    <div class="pull-right">Compare With</div>
+                </label>      
+                <div class="col-md-6">
+                    <nz-select [formControlName]="item.name" class="form-control" style="height: auto" nzPlaceHolder="All" 
+                    [ngModel]="selectedValue"
+                    (ngModelChange)="onCompareDropDownChange($event)"
+                    [nzShowArrow]="true" nzShowSearch nzAllowClear nzBorderless>
+                        <nz-option *ngFor="let list of comparisonProjectList" [nzLabel]="list.scenarioName" [nzValue]="list.id"></nz-option>
+                    </nz-select>
+                </div>
+                <!--div *ngIf="item.number<(compareMax)" class="col-1" style="display: flex; flex-direction: row; justify-content: flex-end;">
+                    <button class=" btn btn-primary ng-star-inserted" (click)="addItem()">Add</button>
+                </div-->
+            </div>
+            <div class="row align-items-center">
+                <div class="col-12" style="display: flex; flex-direction: row; justify-content: flex-end;">
+                    <!--button class=" btn btn-outline-primary mr-1" type="button" (click)="addItem()">Add</button-->
+                    <button class=" btn btn-primary ng-star-inserted" type="submit">Compare</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="mb-3">
+    <nz-collapse nzAccordion>
+        <nz-collapse-panel nzHeader="Filters" nzShowArrow="false" nzActive="true">
+            <form [formGroup]="form" (ngSubmit)="fetchData()">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Strategic Objective</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="strategicObjective" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let strategicObjective of filters?.strategicObjective" [nzLabel]="strategicObjective" [nzValue]="strategicObjective"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Sub-strategic Objective</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="subObjective" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let subObjective of filters?.subObjective" [nzLabel]="subObjective" [nzValue]="subObjective"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Project Type</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="projectTypeList" class="form-control" style="height: auto" nzPlaceHolder="All" nzMode="multiple" [nzShowArrow]="true" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let projectType of filters?.projectType" [nzLabel]="projectType" [nzValue]="projectType"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>State</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="stateCode" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder" (ngModelChange)="onStateSelect($event)">
+                                    <nz-option *ngFor="let geoStateModel of filters?.state" [nzLabel]="geoStateModel.name" [nzValue]="geoStateModel.code"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Business Area</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="businessArea" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let ba of baList" [nzLabel]="ba.areaName" [nzValue]="ba.areaCode"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Voltage</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="voltageList" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let voltage of filters?.voltage" [nzLabel]="voltage+'kV'" [nzValue]="voltage"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" style="display: flex; flex-direction: row; justify-content: flex-end;">
+                        <button class=" btn btn-outline-primary mr-1" (click)="clearFilter()" type="button">Reset</button>
+                        <button class=" btn btn-primary ng-star-inserted" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </nz-collapse-panel>
+    </nz-collapse>
+</div>
+<!--    
+    <app-tablegrid [title]="" 
+    [freezeLeftList]="tableGridRules['freeze']['left']" [freezeRightList]="tableGridRules['freeze']['right']"
+    [itemlist]="tablelistInit" [formatList]="tableGridRules['format']['formatTest']"
+    [columnHeader]="testTableColumns" [mergeRule]="tableGridRules['mergeRule']['1']" [seq]="true" [loading]="loading"
+    [total]="true"
+    (eventTriggered)="onTableGridEvent($event)">
+    </app-tablegrid>
+-->
+<div class="row" [hidden]="!compared">
+    <div class="col-12">
+        <nz-collapse nzAccordion>
+<!-- GENCODE:MARKER:8:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.2.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Summary of Prioritized Project" nzShowArrow="false" nzActive="true">
+<app-tablegrid [title]="" 
+[freezeLeftList]="tableGridRules_v2['freeze']['left']" [freezeRightList]="tableGridRules_v2['freeze']['right']"
+[itemlist]="allPrioSummaryGridData" [formatList]="tableGridRules_v2['format']"
+[columnHeader]="allSummaryGridCol" [mergeRule]="tableGridRules_v2['mergeRule']" [seq]="false" [loading]="loading"
+[total]="false"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="tableGridRules_v2['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.2.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.1.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Summary of Deprioritized Project" nzShowArrow="false" nzActive="false">
+<app-tablegrid [title]="" 
+[freezeLeftList]="tableGridRules['freeze']['left']" [freezeRightList]="tableGridRules['freeze']['right']"
+[itemlist]="allDeprioSummaryGridData" [formatList]="tableGridRules['format']"
+[columnHeader]="allSummaryGridCol" [mergeRule]="tableGridRules['mergeRule']" [seq]="false" [loading]="loading"
+[total]="false"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="tableGridRules['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.1.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Summary of Total Project" nzShowArrow="false" nzActive="false">
+<app-tablegrid [title]="" 
+[freezeLeftList]="tableGridRules['freeze']['left']" [freezeRightList]="tableGridRules['freeze']['right']"
+[itemlist]="allProjSummaryGridData" [formatList]="tableGridRules['format']"
+[columnHeader]="allSummaryGridCol" [mergeRule]="tableGridRules['mergeRule']" [seq]="false" [loading]="loading"
+[total]="false"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="tableGridRules['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.1.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:8:END -->
+        </nz-collapse>
+    </div>
+</div>
+
+<div>&nbsp;</div>
+
+
+<div class="row" [hidden]="!compared">
+    <div class="col-6">
+        <!-- GENCODE:MARKER:13:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Total Project'" 
+[freezeLeftList]="ComparisonSummaryGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonSummaryGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonSummaryGrid" [formatList]="ComparisonSummaryGridInfoCFGRule['format']"
+[columnHeader]="ComparisonSummaryGridHdr" [mergeRule]="ComparisonSummaryGridInfoCFGRule['mergeRule']" [seq]="false" [loading]="loading"
+[total]="true" [totalRule]="ComparisonSummaryGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonSummaryGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonSummaryGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+        <!-- GENCODE:MARKER:13:END -->
+    </div>
+    <div class="col-6" [hidden]="!compared">
+        <!-- GENCODE:MARKER:14:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Total Project'" 
+[freezeLeftList]="ComparisonRightSummaryGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightSummaryGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightSummaryGrid" [formatList]="ComparisonRightSummaryGridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightSummaryGridHdr" [mergeRule]="ComparisonRightSummaryGridInfoCFGRule['mergeRule']" [seq]="false" [loading]="loading"
+[total]="true" [totalRule]="ComparisonRightSummaryGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightSummaryGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightSummaryGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+        <!-- GENCODE:MARKER:14:END -->
+    </div>
+</div>
+
+<div class="row" [hidden]="!compared">
+    <div class="col-6">
+        <div class="row">
+            <div class="col">
+                <hr>
+                <div style="width:100%;">
+                    <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('chart')">Download Chart</button>
+                    <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcelTreated('chart', this.chartData, {'0':'Prioritised','1':'Deprioritised'}, 'Project Type', ['x','y','r'])">Download Excel</button>
+                </div>
+                <canvas #chart id="chart" height="250px"></canvas>
+            </div>
+        </div>
+
+<!-- GENCODE:MARKER:1:START -->
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('LeftBarLineBudgetChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftBarLineBudgetChart', this.LeftBarLineBudgetChartData)">Download Excel</button>
+        </div>
+    	<canvas #LeftBarLineBudgetChart id="LeftBarLineBudgetChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('LeftStackedBarBudgetChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftStackedBarBudgetChart', this.LeftStackedBarBudgetChartData)">Download Excel</button>
+        </div>
+    	<canvas #LeftStackedBarBudgetChart id="LeftStackedBarBudgetChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('LeftBarLineNPVChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftBarLineNPVChart', this.LeftBarLineNPVChartData)">Download Excel</button>
+        </div>
+    	<canvas #LeftBarLineNPVChart id="LeftBarLineNPVChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('LeftStackedBarNPVChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftStackedBarNPVChart', this.LeftStackedBarNPVChartData)">Download Excel</button>
+        </div>
+    	<canvas #LeftStackedBarNPVChart id="LeftStackedBarNPVChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('LeftRadarElementChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftRadarElementChart', this.LeftRadarElementChartData)">Download Excel</button>
+        </div>
+    	<canvas #LeftRadarElementChart id="LeftRadarElementChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:1:END -->
+	</div>
+    <!--Compare-->
+    <div class="col-6" [hidden]="!compared">
+        
+        <div class="row">
+            <div class="col">
+                <hr>
+                <div style="width:100%;">
+                    <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('compareChart')">Download Chart</button>
+                    <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcelTreated('compareChart', this.compareChartData, {'0':'Prioritised','1':'Deprioritised'}, 'Project Type', ['x','y','r'])">Download Excel</button>
+                </div>
+                <canvas #compareChart id="compareChart" height="250px"></canvas>
+            </div>
+        </div>
+
+<!-- GENCODE:MARKER:2:START -->
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('RightBarLineBudgetChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('RightBarLineBudgetChart', this.RightBarLineBudgetChartData)">Download Excel</button>
+        </div>
+    	<canvas #RightBarLineBudgetChart id="RightBarLineBudgetChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('RightStackedBarBudgetChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('RightStackedBarBudgetChart', this.RightStackedBarBudgetChartData)">Download Excel</button>
+        </div>
+    	<canvas #RightStackedBarBudgetChart id="RightStackedBarBudgetChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('RightBarLineNPVChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('RightBarLineNPVChart', this.RightBarLineNPVChartData)">Download Excel</button>
+        </div>
+    	<canvas #RightBarLineNPVChart id="RightBarLineNPVChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('RightStackedBarNPVChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('RightStackedBarNPVChart', this.RightStackedBarNPVChartData)">Download Excel</button>
+        </div>
+    	<canvas #RightStackedBarNPVChart id="RightStackedBarNPVChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('RightRadarElementChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('RightRadarElementChart', this.RightRadarElementChartData)">Download Excel</button>
+        </div>
+    	<canvas #RightRadarElementChart id="RightRadarElementChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:2:END -->
+	</div>
+</div>
+
+
+
+<div class="row" [hidden]="!compared">
+    <div class="col-12">
+	</div>
+    <div class="col-6">
+        <!-- GENCODE:MARKER:15:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Prioritized Project'" 
+[freezeLeftList]="ComparisonPrioritisedGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonPrioritisedGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonPrioritisedGrid" [formatList]="ComparisonPrioritisedGridInfoCFGRule['format']"
+[columnHeader]="ComparisonPrioritisedGridHdr" [mergeRule]="ComparisonPrioritisedGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonPrioritisedGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonPrioritisedGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonPrioritisedGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+        <!-- GENCODE:MARKER:15:END -->
+    </div>
+	<div class="col-6">
+        <!-- GENCODE:MARKER:16:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Prioritized Project'" 
+[freezeLeftList]="ComparisonRightPrioritisedGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightPrioritisedGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightPrioritisedGrid" [formatList]="ComparisonRightPrioritisedGridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightPrioritisedGridHdr" [mergeRule]="ComparisonRightPrioritisedGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonRightPrioritisedGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightPrioritisedGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightPrioritisedGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+        <!-- GENCODE:MARKER:16:END -->
+    </div>
+
+    <div class="col-12">
+        <nz-collapse nzAccordion [hidden]="!compared">
+            <nz-collapse-panel nzHeader="Category of Prioritized Project (Option 1)" nzShowArrow="false" nzActive="false">
+                <div class="row">
+                    <div class="col-6">
+<!-- GENCODE:MARKER:9:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonCategorizedPrio_1GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonCategorizedPrio_1GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonCategorizedPrio_1Grid" [formatList]="ComparisonCategorizedPrio_1GridInfoCFGRule['format']"
+[columnHeader]="ComparisonCategorizedPrio_1GridHdr" [mergeRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:9:END -->
+                    </div>
+                    <div class="col-6">
+<!-- GENCODE:MARKER:10:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightCategorizedPrio_1Grid" [formatList]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightCategorizedPrio_1GridHdr" [mergeRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:10:END -->
+                    </div>
+                </div>
+            </nz-collapse-panel>
+            <nz-collapse-panel nzHeader="Category of Prioritized Project (Option 2)" nzShowArrow="false" nzActive="false">
+                <div class="row">
+                    <div class="col-6">
+<!-- GENCODE:MARKER:19:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonCategorizedPrio_2GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonCategorizedPrio_2GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonCategorizedPrio_2Grid" [formatList]="ComparisonCategorizedPrio_2GridInfoCFGRule['format']"
+[columnHeader]="ComparisonCategorizedPrio_2GridHdr" [mergeRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:19:END -->
+                    </div>
+                    <div class="col-6">
+<!-- GENCODE:MARKER:20:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightCategorizedPrio_2Grid" [formatList]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightCategorizedPrio_2GridHdr" [mergeRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:20:END -->
+                    </div>
+                </div>
+            </nz-collapse-panel>
+        </nz-collapse>
+    </div>
+
+    <div>&nbsp;</div>
+    
+    <div class="col-12">
+    <nz-collapse nzAccordion [hidden]="!compared">
+        <nz-collapse-panel nzHeader="Mutually Inclusive" nzShowArrow="false" nzActive="false">
+            <div class="row" [hidden]="!compared">
+                <div class="col-12">
+<!-- GENCODE:MARKER:5:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
+[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
+[actionRule]="InclusiveExclusiveDataGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:5:END -->
+                </div>
+            </div>
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="Mutually Exclusive" nzShowArrow="false" nzActive="false">
+            <div class="row" [hidden]="!compared">
+                <div class="col-12">
+                </div>
+                <div class="col-6">
+<!-- GENCODE:MARKER:6:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
+[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
+[actionRule]="InclusiveExclusiveDataGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+            <!-- GENCODE:MARKER:6:END -->
+                </div>
+                <div class="col-6">
+            <!-- GENCODE:MARKER:7:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
+[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
+[actionRule]="InclusiveExclusiveDataGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+            <!-- GENCODE:MARKER:7:END -->
+                </div>
+            </div>
+        </nz-collapse-panel>
+    </nz-collapse>
+</div>
+
+<div class="col-12">&nbsp;</div>
+    <div class="col-6">
+    <!-- GENCODE:MARKER:25:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Alternate Projects'" 
+[freezeLeftList]="ComparisonAlternateProjGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonAlternateProjGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonAlternateProjGrid" [formatList]="ComparisonAlternateProjGridInfoCFGRule['format']"
+[columnHeader]="ComparisonAlternateProjGridHdr" [mergeRule]="ComparisonAlternateProjGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonAlternateProjGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonAlternateProjGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonAlternateProjGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+    <!-- GENCODE:MARKER:25:END -->
+    </div>
+    <div class="col-6">
+    <!-- GENCODE:MARKER:26:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Alternate Projects'" 
+[freezeLeftList]="ComparisonRightAlternateProjGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightAlternateProjGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightAlternateProjGrid" [formatList]="ComparisonRightAlternateProjGridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightAlternateProjGridHdr" [mergeRule]="ComparisonRightAlternateProjGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonRightAlternateProjGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightAlternateProjGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightAlternateProjGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+    <!-- GENCODE:MARKER:26:END -->
+    </div>
+
+<div class="col-12">&nbsp;</div>
+    <div class="col-6">
+<!-- GENCODE:MARKER:23:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Supply Projects'" 
+[freezeLeftList]="ComparisonSupplyGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonSupplyGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonSupplyGrid" [formatList]="ComparisonSupplyGridInfoCFGRule['format']"
+[columnHeader]="ComparisonSupplyGridHdr" [mergeRule]="ComparisonSupplyGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonSupplyGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonSupplyGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonSupplyGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:23:END -->
+    </div>
+    <div class="col-6">
+<!-- GENCODE:MARKER:24:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Supply Projects'" 
+[freezeLeftList]="ComparisonRightSupplyGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightSupplyGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightSupplyGrid" [formatList]="ComparisonRightSupplyGridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightSupplyGridHdr" [mergeRule]="ComparisonRightSupplyGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonRightSupplyGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightSupplyGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightSupplyGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:24:END -->
+    </div>
+
+<div class="col-12">&nbsp;</div>
+    <div class="col-6">
+        
+<!-- GENCODE:MARKER:3:START -->
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('LeftStackedBarOSRiskChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftStackedBarOSRiskChart', this.LeftStackedBarOSRiskChartData)">Download Excel</button>
+        </div>
+    	<canvas #LeftStackedBarOSRiskChart id="LeftStackedBarOSRiskChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:3:END -->
+        
+        <!-- GENCODE:MARKER:17:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Deprioritized Project'" 
+[freezeLeftList]="ComparisonDeprioritizedGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonDeprioritizedGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonDeprioritizedGrid" [formatList]="ComparisonDeprioritizedGridInfoCFGRule['format']"
+[columnHeader]="ComparisonDeprioritizedGridHdr" [mergeRule]="ComparisonDeprioritizedGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonDeprioritizedGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonDeprioritizedGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonDeprioritizedGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+        <!-- GENCODE:MARKER:17:END -->
+    </div>
+	<div class="col-6">
+
+<!-- GENCODE:MARKER:4:START -->
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.1.tpl
+===============================================================-->
+<div class="row">
+    <div class="col">
+        <hr>
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('RightStackedBarOSRiskChart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcel('RightStackedBarOSRiskChart', this.RightStackedBarOSRiskChartData)">Download Excel</button>
+        </div>
+    	<canvas #RightStackedBarOSRiskChart id="RightStackedBarOSRiskChart" height="250px"></canvas>
+    </div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.1.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:4:END -->
+
+        <!-- GENCODE:MARKER:18:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Deprioritized Project'" 
+[freezeLeftList]="ComparisonRightDeprioritizedGridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightDeprioritizedGridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightDeprioritizedGrid" [formatList]="ComparisonRightDeprioritizedGridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightDeprioritizedGridHdr" [mergeRule]="ComparisonRightDeprioritizedGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="ComparisonRightDeprioritizedGridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightDeprioritizedGridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightDeprioritizedGridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+        <!-- GENCODE:MARKER:18:END -->
+    </div>
+
+    <div class="col-12">
+        <nz-collapse nzAccordion [hidden]="!compared">
+            <nz-collapse-panel nzHeader="Category of Deprioritized Project (Option 1)" nzShowArrow="false" nzActive="false">
+                <div class="row">
+                    <div class="col-6">
+                        <!-- GENCODE:MARKER:11:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonCategorizedDeprio_1GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonCategorizedDeprio_1GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonCategorizedDeprio_1Grid" [formatList]="ComparisonCategorizedDeprio_1GridInfoCFGRule['format']"
+[columnHeader]="ComparisonCategorizedDeprio_1GridHdr" [mergeRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+                        <!-- GENCODE:MARKER:11:END -->
+                    </div>
+                    <div class="col-6">
+                        <!-- GENCODE:MARKER:12:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightCategorizedDeprio_1Grid" [formatList]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightCategorizedDeprio_1GridHdr" [mergeRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+                        <!-- GENCODE:MARKER:12:END -->
+                    </div>
+                </div>
+            </nz-collapse-panel>
+            <nz-collapse-panel nzHeader="Category of Deprioritized Project (Option 2)" nzShowArrow="false" nzActive="false">
+                <div class="row">
+                    <div class="col-6">
+                        <!-- GENCODE:MARKER:21:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonCategorizedDeprio_2GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonCategorizedDeprio_2GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonCategorizedDeprio_2Grid" [formatList]="ComparisonCategorizedDeprio_2GridInfoCFGRule['format']"
+[columnHeader]="ComparisonCategorizedDeprio_2GridHdr" [mergeRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+                        <!-- GENCODE:MARKER:21:END -->
+                    </div>
+                    <div class="col-6">
+                        <!-- GENCODE:MARKER:22:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="" 
+[freezeLeftList]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['freeze']['left']" [freezeRightList]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['freeze']['right']"
+[itemlist]="ComparisonRightCategorizedDeprio_2Grid" [formatList]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['format']"
+[columnHeader]="ComparisonRightCategorizedDeprio_2GridHdr" [mergeRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['highlightRule']"
+[actionRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+                        <!-- GENCODE:MARKER:22:END -->
+                    </div>
+                </div>
+            </nz-collapse-panel>
+        </nz-collapse>
+    </div>
+
+    <app-floatingbar [itemlist]="filterList" (tabSelect)="onTabSelected($event)"></app-floatingbar>
+</div>

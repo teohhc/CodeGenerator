@@ -1,0 +1,1 @@
+    ,##BLOCK##:"/##RESOLVEDATA(URI, Endpoint, 1)##/Get##BLOCK##"

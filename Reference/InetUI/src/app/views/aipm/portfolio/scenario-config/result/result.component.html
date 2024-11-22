@@ -1,0 +1,432 @@
+<div class="mb-3">
+    <nz-collapse nzAccordion>
+        <nz-collapse-panel nzHeader="Filters" nzShowArrow="false" nzActive="true">
+            <form [formGroup]="form" (ngSubmit)="fetchData()">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Strategic Objective</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="strategicObjective" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let strategicObjective of filters?.strategicObjective" [nzLabel]="strategicObjective" [nzValue]="strategicObjective"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Sub-strategic Objective for Reliability</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="subObjective" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let subObjective of filters?.subObjective" [nzLabel]="subObjective" [nzValue]="subObjective"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Sub-strategic Objective for High Profile Area</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="subObjectiveHPA" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let subObjectiveHPA of filters?.subObjectiveHPA" [nzLabel]="subObjectiveHPA" [nzValue]="subObjectiveHPA"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Project Type</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="projectTypeList" class="form-control" style="height: auto" nzPlaceHolder="All" nzMode="multiple" [nzShowArrow]="true" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let projectType of filters?.projectType" [nzLabel]="projectType" [nzValue]="projectType"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>State</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="stateCode" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder" (ngModelChange)="onStateSelect($event)">
+                                    <nz-option *ngFor="let geoStateModel of filters?.state" [nzLabel]="geoStateModel.name" [nzValue]="geoStateModel.code"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Business Area</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="businessArea" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let ba of baList" [nzLabel]="ba.areaName" [nzValue]="ba.areaCode"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                <div>Voltage</div>
+                            </label>
+                            <div class="col-md-8">
+                                <nz-select formControlName="voltageList" class="form-control" style="height: auto" nzPlaceHolder="All" [nzShowArrow]="true" nzMode="multiple" nzShowSearch nzAllowClear nzBorderless [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder">
+                                    <nz-option *ngFor="let voltage of filters?.voltage" [nzLabel]="voltage+'kV'" [nzValue]="voltage"></nz-option>
+                                </nz-select>
+                                <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" style="display: flex; flex-direction: row; justify-content: flex-end;">
+                        <button class=" btn btn-outline-primary mr-1" (click)="clearFilter()" type="button">Reset</button>
+                        <button class=" btn btn-primary ng-star-inserted" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </nz-collapse-panel>
+    </nz-collapse>
+</div>
+
+<!-- GENCODE:MARKER:5:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Total Project'" 
+[freezeLeftList]="resultSummaryTableRules['freeze']['left']" [freezeRightList]="resultSummaryTableRules['freeze']['right']"
+[itemlist]="listOfSummary" [formatList]="resultSummaryTableRules['format']"
+[columnHeader]="resultSummaryTableColumns" [mergeRule]="resultSummaryTableRules['mergeRule']" [seq]="false" [loading]="loading"
+[total]="true" [totalRule]="resultSummaryTableRules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultSummaryTableRules['highlightRule']"
+[actionRule]="resultSummaryTableRules['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:5:END -->
+
+
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadChart('chart')">Download Chart</button>
+            <button type="button" class="btn btn-outline-primary float-button" (click)="downloadExcelTreated('chart', this.chartData, {'0':'Prioritised','1':'Deprioritised'}, 'Project Type', ['x','y','r'])">Download Excel</button>
+        </div>
+        <canvas #chart id="chart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+
+<!--Siti 210623>
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <canvas #budgetchart height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div-->
+<!-- GENCODE:MARKER:1:START -->
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.2.tpl
+===============================================================-->
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button class="btn btn-outline-primary float-button" (click)="downloadChart('LeftBarLineBudgetResultChart')">Download Chart</button>
+            <button class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftBarLineBudgetResultChart', this.LeftBarLineBudgetResultChartData)">Download Excel</button>
+        </div>
+        <canvas #LeftBarLineBudgetResultChart id="LeftBarLineBudgetResultChart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.2.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.2.tpl
+===============================================================-->
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button class="btn btn-outline-primary float-button" (click)="downloadChart('LeftStackedBarBudgetResultChart')">Download Chart</button>
+            <button class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftStackedBarBudgetResultChart', this.LeftStackedBarBudgetResultChartData)">Download Excel</button>
+        </div>
+        <canvas #LeftStackedBarBudgetResultChart id="LeftStackedBarBudgetResultChart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.2.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.2.tpl
+===============================================================-->
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button class="btn btn-outline-primary float-button" (click)="downloadChart('LeftBarLineNPVResultChart')">Download Chart</button>
+            <button class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftBarLineNPVResultChart', this.LeftBarLineNPVResultChartData)">Download Excel</button>
+        </div>
+        <canvas #LeftBarLineNPVResultChart id="LeftBarLineNPVResultChart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.2.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.2.tpl
+===============================================================-->
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button class="btn btn-outline-primary float-button" (click)="downloadChart('LeftStackedBarNPVResultChart')">Download Chart</button>
+            <button class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftStackedBarNPVResultChart', this.LeftStackedBarNPVResultChartData)">Download Excel</button>
+        </div>
+        <canvas #LeftStackedBarNPVResultChart id="LeftStackedBarNPVResultChart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.2.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.2.tpl
+===============================================================-->
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button class="btn btn-outline-primary float-button" (click)="downloadChart('LeftRadarElementResultChart')">Download Chart</button>
+            <button class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftRadarElementResultChart', this.LeftRadarElementResultChartData)">Download Excel</button>
+        </div>
+        <canvas #LeftRadarElementResultChart id="LeftRadarElementResultChart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.2.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:1:END -->
+
+<!-- GENCODE:MARKER:6:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Prioritized Project'" 
+[freezeLeftList]="resultApprovedTableRules['freeze']['left']" [freezeRightList]="resultApprovedTableRules['freeze']['right']"
+[itemlist]="listOfApproved" [formatList]="resultApprovedTableRules['format']"
+[columnHeader]="resultApprovedTableColumns" [mergeRule]="resultApprovedTableRules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="resultApprovedTableRules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultApprovedTableRules['highlightRule']"
+[actionRule]="resultApprovedTableRules['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:6:END -->
+
+<button class="btn btn-primary" type="button" (click)="viewGanttChart()">View Gantt Chart</button>
+
+<div class="mt-3">&nbsp;</div>
+
+<div class="row">
+    <div class="col-12">
+        <nz-collapse nzAccordion>
+<!-- GENCODE:MARKER:3:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.5.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Category of Prioritized Project (Option 1)" nzShowArrow="false" nzActive="false">
+<app-tablegrid [title]="" 
+[freezeLeftList]="resultApprovedGroupByGridRules['freeze']['left']" [freezeRightList]="resultApprovedGroupByGridRules['freeze']['right']"
+[itemlist]="listOfApprovedGroupBy" [formatList]="resultApprovedGroupByGridRules['format']"
+[columnHeader]="resultApprovedGroupByGridColumns" [mergeRule]="resultApprovedGroupByGridRules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="resultApprovedGroupByGridRules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultApprovedGroupByGridRules['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.5.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.5.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Category of Prioritized Project (Option 2)" nzShowArrow="false" nzActive="false">
+<app-tablegrid [title]="" 
+[freezeLeftList]="resultApprovedGroupByGrid2Rules['freeze']['left']" [freezeRightList]="resultApprovedGroupByGrid2Rules['freeze']['right']"
+[itemlist]="listOfApprovedGroupBy2" [formatList]="resultApprovedGroupByGrid2Rules['format']"
+[columnHeader]="resultApprovedGroupByGrid2Columns" [mergeRule]="resultApprovedGroupByGrid2Rules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="resultApprovedGroupByGrid2Rules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultApprovedGroupByGrid2Rules['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.5.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:3:END -->
+        </nz-collapse>
+    </div>
+</div>
+
+<div>&nbsp;</div>
+
+<div class="d-flex justify-content-between mb-2">
+    <h4 class="table-title"></h4>
+    <button *ngIf="editable" class="btn btn-primary float-right" type="button"  (click)="importSupplyProject()">
+         Add
+    </button>
+</div>
+
+<!-- GENCODE:MARKER:8:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Supply Projects'" 
+[freezeLeftList]="resultSupplyTableRules['freeze']['left']" [freezeRightList]="resultSupplyTableRules['freeze']['right']"
+[itemlist]="listOfSupply" [formatList]="resultSupplyTableRules['format']"
+[columnHeader]="resultSupplyTableColumns" [mergeRule]="resultSupplyTableRules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="resultSupplyTableRules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultSupplyTableRules['highlightRule']"
+[actionRule]="resultSupplyTableRules['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:8:END -->
+
+<!-- GENCODE:MARKER:2:START -->
+
+<!--===============================================================
+// TEMPLATE START: component.html.1.2.tpl
+===============================================================-->
+<div class="row">
+    <div class="col-3">&nbsp;</div>
+    <div class="col-7">
+        <div style="width:100%;">
+            <button class="btn btn-outline-primary float-button" (click)="downloadChart('LeftStackedBarOSRiskResultChart')">Download Chart</button>
+            <button class="btn btn-outline-primary float-button" (click)="downloadExcel('LeftStackedBarOSRiskResultChart', this.LeftStackedBarOSRiskResultChartData)">Download Excel</button>
+        </div>
+        <canvas #LeftStackedBarOSRiskResultChart id="LeftStackedBarOSRiskResultChart" height="250px"></canvas>
+    </div>
+    <div class="col-3">&nbsp;</div>
+</div>
+<!--===============================================================
+// TEMPLATE END: component.html.1.2.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:2:END -->
+
+<!-- GENCODE:MARKER:7:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.4.tpl
+===============================================================-->
+<app-tablegrid [title]="'Deprioritized Project'" 
+[freezeLeftList]="resultRejectedTableRules['freeze']['left']" [freezeRightList]="resultRejectedTableRules['freeze']['right']"
+[itemlist]="listOfRejected" [formatList]="resultRejectedTableRules['format']"
+[columnHeader]="resultRejectedTableColumns" [mergeRule]="resultRejectedTableRules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="false" [totalRule]="resultRejectedTableRules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultRejectedTableRules['highlightRule']"
+[actionRule]="resultRejectedTableRules['actionRule']"></app-tablegrid>
+
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.4.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:7:END -->
+
+<div>&nbsp;</div>
+
+<div class="row">
+    <div class="col-12">
+        <nz-collapse nzAccordion>
+
+<!-- GENCODE:MARKER:4:START -->
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.5.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Category of Deprioritized Project (Option 1)" nzShowArrow="false" nzActive="false">
+<app-tablegrid [title]="" 
+[freezeLeftList]="resultRejectedGroupByGridRules['freeze']['left']" [freezeRightList]="resultRejectedGroupByGridRules['freeze']['right']"
+[itemlist]="listOfRejectedGroupBy" [formatList]="resultRejectedGroupByGridRules['format']"
+[columnHeader]="resultRejectedGroupByGridColumns" [mergeRule]="resultRejectedGroupByGridRules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="resultRejectedGroupByGridRules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultRejectedGroupByGridRules['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.5.tpl
+===============================================================-->
+
+
+<!--===============================================================
+// TEMPLATE START: gridcomponent.html.2.5.tpl
+===============================================================-->
+<nz-collapse-panel nzHeader="Category of Deprioritized Project (Option 2)" nzShowArrow="false" nzActive="false">
+<app-tablegrid [title]="" 
+[freezeLeftList]="resultRejectedGroupByGrid2Rules['freeze']['left']" [freezeRightList]="resultRejectedGroupByGrid2Rules['freeze']['right']"
+[itemlist]="listOfRejectedGroupBy2" [formatList]="resultRejectedGroupByGrid2Rules['format']"
+[columnHeader]="resultRejectedGroupByGrid2Columns" [mergeRule]="resultRejectedGroupByGrid2Rules['mergeRule']" [seq]="true" [loading]="loading"
+[total]="true" [totalRule]="resultRejectedGroupByGrid2Rules['totalRule']"
+(eventTriggered)="onTableGridEvent($event)" [highlightRule]="resultRejectedGroupByGrid2Rules['highlightRule']"></app-tablegrid>
+</nz-collapse-panel>
+<!--===============================================================
+// TEMPLATE END: gridcomponent.html.2.5.tpl
+===============================================================-->
+
+<!-- GENCODE:MARKER:4:END -->
+        </nz-collapse>
+    </div>
+</div>
+
+<nz-modal
+  nzWidth="80%"
+  nzMaskClosable="false"
+  [(nzVisible)]="modal.show"
+  [nzTitle]="modal.title"
+  (nzOnCancel)="modal.show = !modal.show"
+  [nzFooter]="null"
+  *ngIf="modal.show"
+>
+  <app-aipm-portfolio-project-import ></app-aipm-portfolio-project-import>
+</nz-modal>
