@@ -11,7 +11,18 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { tap } from 'rxjs/operators';
 import { PortfolioImportComponent } from '../../import/import.component';
 import { IPortfolioSupplyResult, PortfolioResultChartData, PortfolioResultChartDataset, PORTFOLIO_APPROVED_RESULT_TABLE_COLUMN, PORTFOLIO_REJECTED_RESULT_TABLE_COLUMN, PORTFOLIO_SUMMARY_RESULT_TABLE_COLUMN, RESULT_SUPPLY_TABLE_COLUMN, IPortfolioSummaryCommonResult, PORTFOLIO_APPROVED_GROUPBY_RESULT_TABLE_COLUMN, PORTFOLIO_REJECTED_GROUPBY_RESULT_TABLE_COLUMN, PORTFOLIO_APPROVED_GROUPBY_RESULT_TABLE_COLUMN2, PORTFOLIO_REJECTED_GROUPBY_RESULT_TABLE_COLUMN2, hdrDefComparisonSummaryGridHdr, hdrDefComparisonPrioritisedGridHdr, hdrDefComparisonRightSummaryGridHdr, hdrDefComparisonRightPrioritisedGridHdr, hdrDefComparisonSupplyGridHdr, hdrDefComparisonRightSupplyGridHdr, hdrDefComparisonDeprioritizedGridHdr, hdrDefComparisonRightDeprioritizedGridHdr, hdrDefComparisonCategorizedPrio_1GridHdr, hdrDefComparisonRightCategorizedPrio_1GridHdr, hdrDefComparisonCategorizedPrio_2GridHdr, hdrDefComparisonRightCategorizedPrio_2GridHdr, hdrDefComparisonCategorizedDeprio_1GridHdr, hdrDefComparisonRightCategorizedDeprio_1GridHdr, hdrDefComparisonCategorizedDeprio_2GridHdr, hdrDefComparisonRightCategorizedDeprio_2GridHdr 
-  , hdrDefComparisonAlternateProjGridHdr, hdrDefComparisonRightAlternateProjGridHdr
+  , hdrDefComparisonAlternateProjGridHdr, hdrDefComparisonRightAlternateProjGridHdr 
+/* GENCODE:MARKER:21:START */
+
+//===============================================================
+// TEMPLATE START: gridcomponent.ts.4.1.tpl
+//===============================================================
+,hdrDefInclusiveExclusiveDataGridHdr
+//===============================================================
+// TEMPLATE END: gridcomponent.ts.4.1.tpl
+//===============================================================
+
+/* GENCODE:MARKER:21:END */
 } from '../../portfolio.interface';
 import { AipmPortfolioService } from '../../portfolio.service';
 import { IScenario } from '@views/aipm/scenario/scenario.interface';
@@ -435,6 +446,50 @@ public testHighest = {
 /* GENCODE:MARKER:15:END */
 
 /* GENCODE:MARKER:18:START */
+
+//===============================================================
+// TEMPLATE START: gridcomponent.ts.1.3.tpl
+//===============================================================
+    public InclusiveExclusiveDataGrid: any[];
+
+    public InclusiveExclusiveDataGridHdr = hdrDefInclusiveExclusiveDataGridHdr();
+    public InclusiveExclusiveDataGridInfoCFGRule = {
+      'freeze': {
+        'left': ['ProjectDefinition','UDProjectDescription'], 
+        'right':['action']
+      },
+      'format': {
+ 'Budget_Before_Revised': { 'type': 'number', 'format': '1.2-2' },
+ 'Total_Budget': { 'type': 'number', 'format': '1.2-2' },
+ 'Risk_Reduced': { 'type': 'number', 'format': '1.2-2' },
+ 'TCO_Opex': { 'type': 'number', 'format': '1.2-2' },
+ 'TCO_TotalProjectCost': { 'type': 'number', 'format': '1.2-2' },
+ 'NPV_RiskReduced': { 'type': 'number', 'format': '1.2-2' },
+ 'Project_Score': { 'type': 'number', 'format': '1.3-3' },
+ 'Start_Month_Scope_1': { 'type': 'date', 'format': 'MMM yyyy' },
+ 'Start_Month_Scope_2': { 'type': 'date', 'format': 'MMM yyyy' },
+ 'Start_Month_Scope_3': { 'type': 'date', 'format': 'MMM yyyy' },
+ 'Start_Month_Scope_4': { 'type': 'date', 'format': 'MMM yyyy' },
+ 'Comm_Month': { 'type': 'date', 'format': 'MMM yyyy' },
+ 'Target_Comm_Month': { 'type': 'date', 'format': 'MMM yyyy' },
+ 'BUDY1': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY2': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY3': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY4': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY5': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY6': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY7': { 'type': 'number', 'format': '1.2-2' },
+ 'BUDY8': { 'type': 'number', 'format': '1.2-2' },
+      },
+      'mergeRule': [],
+      'highlightRule': {},
+      'totalRule': {},
+      'actionRule': [],
+    };
+//===============================================================
+// TEMPLATE END: gridcomponent.ts.1.3.tpl
+//===============================================================
+
 
 //===============================================================
 // TEMPLATE START: gridcomponent.ts.1.3.tpl

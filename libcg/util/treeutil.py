@@ -475,3 +475,27 @@ class TreeUtil:
         evalRules = {}
         for index, row in VARLIST.iterrows():
             self.trees['VARTREE'], evalRules = self.addToTREE(self.trees['VARTREE'], 0, [row['VariableID'], [{row['Num']:row['Token']}]], 'VARTREE', self.rules['UNIQ'], evalRules)
+
+    def funcResolveVar(self, param):
+        result = param[1]
+        if len(param[2]) > 0:
+            #print(json.dumps({'---> funcResolveVar': param }, sort_keys=True, indent=4))
+            mainID = param[0]
+            block = param[1]
+            extractPatternList = param[2]
+            regexPat = param[3]
+            resolvedStmt={}
+            for stmtIdx, pat in enumerate(extractPatternList):
+                RESERVED = pat[0]
+                PARAMS = pat[1]
+                paramList = pat[1].split(",")
+                TYPE = paramList[0]
+                NUM = paramList[1]
+                #print(json.dumps({'---> funcResolveVar:replacePattern': {
+                #        'from':"##{}({})##".format(RESERVED, PARAMS),
+                #        'to':VARTREE[mainID][int(NUM)]
+                #    }              
+                #}, sort_keys=True, indent=4))
+                result = self.replacePattern(result, "##{}({})##".format(RESERVED, PARAMS), self.trees['VARTREE'][mainID][int(NUM)], [True, False])
+        #result = replacePattern(result, param[3], resolvedStmt[mIdx], [True, False])
+        return result

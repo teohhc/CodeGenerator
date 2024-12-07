@@ -1540,6 +1540,57 @@ export function hdrDefComparisonSupplyGridHdr()
 //===============================================================
 // TEMPLATE START: portfolio.interface.ts.1.2.tpl
 //===============================================================
+export function hdrDefInclusiveExclusiveDataGridHdr()
+{
+    return [
+ {displayName: "Project Definition", columnName: "ProjectDefinition", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "90px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Project Description", columnName: "UDProjectDescription", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "250px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Strategic Objective", columnName: "UDStrategicObjective", columnTypeId: 1.0, columnType: "Text", columnWidth: "130px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Sub-strategic Objective for Reliability", columnName: "UDIBRNarrativeMR", columnTypeId: 1.0, columnType: "Text", columnWidth: "130px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Sub-strategic Objective for High Profile Area", columnName: "UDIBRNarrativeHPA", columnTypeId: 1.0, columnType: "Text", columnWidth: "130px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Project Category", columnName: "UDCategory", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "90px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Project Type", columnName: "UDProjectType", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "110px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Voltage", columnName: "UDVoltagekV", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "60px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "State", columnName: "StateName", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "100px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Business Area", columnName: "BusinessAreaName", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Before Revised (RM)", columnName: "Budget_Before_Revised", columnTypeId: 1.0, columnType: "Text", columnWidth: "100px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Total Budget (RM)", columnName: "Total_Budget", columnTypeId: 1.0, columnType: "Text", columnWidth: "100px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Risk Reduced (RM)", columnName: "Risk_Reduced", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "OPEX (RM)", columnName: "TCO_Opex", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Total Project Cost (RM)", columnName: "TCO_TotalProjectCost", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "NPV Risk Reduced (RM)", columnName: "NPV_RiskReduced", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Project Score (NPV Risk Reduced/TCO)", columnName: "Project_Score", columnTypeId: 1.0, columnType: "Text", columnWidth: "100px", isSearchable: false, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Scope 1 Duration (Months)", columnName: "Month_Scope_1", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 1 Start Month", columnName: "Start_Month_Scope_1", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 2 Duration (Months)", columnName: "Month_Scope_2", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 2 Start Month", columnName: "Start_Month_Scope_2", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 3 Duration (Months)", columnName: "Month_Scope_3", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 3 Start Month", columnName: "Start_Month_Scope_3", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 4 Duration (Months)", columnName: "Month_Scope_4", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Scope 4 Start Month", columnName: "Start_Month_Scope_4", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Comm Month", columnName: "Comm_Month", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Target Comm Month", columnName: "Target_Comm_Month", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Mandatory", columnName: "Mandatory", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 1 (RM)", columnName: "BUDY1", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 2 (RM)", columnName: "BUDY2", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 3 (RM)", columnName: "BUDY3", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 4 (RM)", columnName: "BUDY4", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 5 (RM)", columnName: "BUDY5", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 6 (RM)", columnName: "BUDY6", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 7 (RM)", columnName: "BUDY7", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Budget Year 8 (RM)", columnName: "BUDY8", columnTypeId: 1.0, columnType: "Text", columnWidth: "90px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+ {displayName: "Defer Action", columnName: "Defer_Action", columnTypeId: 2.0, columnType: "Drop Down", columnWidth: "90px", isSearchable: true, isSortable: true, display: true, toolTip: "" },
+ {displayName: "Justification", columnName: "Justification", columnTypeId: 1.0, columnType: "Text", columnWidth: "250px", isSearchable: false, isSortable: false, display: true, toolTip: "" },
+    ];
+}
+//===============================================================
+// TEMPLATE END: portfolio.interface.ts.1.2.tpl
+//===============================================================
+
+
+//===============================================================
+// TEMPLATE START: portfolio.interface.ts.1.2.tpl
+//===============================================================
 export function hdrDefComparisonRightSummaryGridHdr()
 {
     return [
