@@ -13,6 +13,15 @@ import { PortfolioImportComponent } from '../../import/import.component';
 import { IPortfolioSupplyResult, PortfolioResultChartData, PortfolioResultChartDataset, PORTFOLIO_APPROVED_RESULT_TABLE_COLUMN, PORTFOLIO_REJECTED_RESULT_TABLE_COLUMN, PORTFOLIO_SUMMARY_RESULT_TABLE_COLUMN, RESULT_SUPPLY_TABLE_COLUMN, IPortfolioSummaryCommonResult, PORTFOLIO_APPROVED_GROUPBY_RESULT_TABLE_COLUMN, PORTFOLIO_REJECTED_GROUPBY_RESULT_TABLE_COLUMN, PORTFOLIO_APPROVED_GROUPBY_RESULT_TABLE_COLUMN2, PORTFOLIO_REJECTED_GROUPBY_RESULT_TABLE_COLUMN2, hdrDefComparisonSummaryGridHdr, hdrDefComparisonPrioritisedGridHdr, hdrDefComparisonRightSummaryGridHdr, hdrDefComparisonRightPrioritisedGridHdr, hdrDefComparisonSupplyGridHdr, hdrDefComparisonRightSupplyGridHdr, hdrDefComparisonDeprioritizedGridHdr, hdrDefComparisonRightDeprioritizedGridHdr, hdrDefComparisonCategorizedPrio_1GridHdr, hdrDefComparisonRightCategorizedPrio_1GridHdr, hdrDefComparisonCategorizedPrio_2GridHdr, hdrDefComparisonRightCategorizedPrio_2GridHdr, hdrDefComparisonCategorizedDeprio_1GridHdr, hdrDefComparisonRightCategorizedDeprio_1GridHdr, hdrDefComparisonCategorizedDeprio_2GridHdr, hdrDefComparisonRightCategorizedDeprio_2GridHdr 
   , hdrDefComparisonAlternateProjGridHdr, hdrDefComparisonRightAlternateProjGridHdr 
 /* GENCODE:MARKER:21:START */
+
+//===============================================================
+// TEMPLATE START: gridcomponent.ts.4.1.tpl
+//===============================================================
+,hdrDefInclusiveExclusiveDataGridHdr
+//===============================================================
+// TEMPLATE END: gridcomponent.ts.4.1.tpl
+//===============================================================
+
 /* GENCODE:MARKER:21:END */
 } from '../../portfolio.interface';
 import { AipmPortfolioService } from '../../portfolio.service';
@@ -23,6 +32,7 @@ import { NONE_TYPE } from '@angular/compiler';
 import * as htmlToImage from 'html-to-image';
 import { saveAs} from 'file-saver';
 import * as XLSX from 'xlsx';
+import { forkJoin } from 'rxjs';
 
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -91,6 +101,9 @@ export class ComparisonComponent implements OnInit {
     }
   }
 */
+
+private isResultApprovedFetched = false;
+private isResultApprovedCompareFetched = false;
 
 public allSummaryGridCol: AipmGridColumn[];
 public allPrioSummaryGridData: any[];
@@ -2263,7 +2276,7 @@ public resultInclusiveExclusiveTableColumns = PORTFOLIO_APPROVED_RESULT_TABLE_CO
     this.getResultRejected();
     this.getResultSummary();
     this.fetchChart();
-    this.getCompareData();
+    //this.getCompareData();
 
     /* GENCODE:MARKER:16:START */
 
@@ -3828,50 +3841,27 @@ this.getResultRejectedGroupBy2();
 
   /* GENCODE:MARKER:5:END */
 
-//   importProjectModalRef: BsModalRef;
-//   importProject() {
-//     if (this.editable) {
-//       this.importProjectModalRef = this.bsModalService.show(
-//         PortfolioImportComponent,
-//         {
-//             initialState: {
-//                 scenarioId: this.scenarioId
-//             },
-//             class: 'modal-xl',
-//             ignoreBackdropClick: true,
-//         }
-//       );
-//       this.importProjectModalRef.onHide.subscribe(() => {
-//           this.fetchData();
-//       });
-//     }
-//   }
+  getResultApproved(): Promise<any> {
+    if (this.isResultApprovedFetched) {
+      return Promise.resolve(this.listOfMutually['lhs']);
+    }
 
-  //  watchImportCompleted() {
-  //   this.portfolioSvc.importCompleted$
-  //     .pipe(
-  //       tap((rs) => {
-  //         if (rs) {
-  //           this.getResultSupply()
-  //         }
-  //       })
-  //     )
-  //     .subscribe();
-  // }
-
-  getResultApproved() {
-    this.portfolioSvc
-      .getPortfolioResultApproved(this.scenarioId, this.reqModel)
-      .subscribe(response => {
-        this.listOfApproved = response;
-        if (this.listOfMutually['lhs']) {
-          delete this.listOfMutually['lhs'];
-        }
-        this.listOfMutually['lhs'] = {};
-        for (var rec in this.listOfApproved) {
-          this.listOfMutually['lhs'][this.listOfApproved[rec].project_ID]=this.listOfApproved[rec];
-        }
-      });
+    return new Promise((resolve, reject) => {
+      this.portfolioSvc
+        .getPortfolioResultApproved(this.scenarioId, this.reqModel)
+        .subscribe(response => {
+          this.listOfApproved = response;
+          if (this.listOfMutually['lhs']) {
+            delete this.listOfMutually['lhs'];
+          }
+          this.listOfMutually['lhs'] = {};
+          for (var rec in this.listOfApproved) {
+            this.listOfMutually['lhs'][this.listOfApproved[rec].Project_ID]=this.listOfApproved[rec];
+          }
+          this.isResultApprovedFetched = true;
+          resolve(this.listOfMutually['lhs']);
+      }, error => reject(error));
+    });
   }
 
   getResultRejected() {
@@ -3992,12 +3982,54 @@ this.getResultRejectedGroupBy2();
     return result;
   }
 
+  doFetchAndCompare() {
+    this.getCompareData();
+    forkJoin([this.getResultApproved(), this.getResultApprovedCompare()]).subscribe(() => {
+      this.doInclusiveExclusive();
+    });
+    this.tablelistInit = this.tablelistTest;
+  }
+
   addThenCompare() {
     this.addItem();
     this.getAllCompareData();
-    this.getCompareData();
-    this.tablelistInit = this.tablelistTest;
+    this.doFetchAndCompare();
+    this.currentItemNo=this.getItemNum();
   }
+
+  /* GENCODE:MARKER:10:START */
+  doInclusiveExclusive() {
+      var keys = this.compDict(this.listOfMutually['lhs'], this.listOfMutually['rhs']);
+  
+      // Inclusive
+      if (this.listOfMutually['inclusive']) {
+        delete this.listOfMutually['inclusive'];
+      }
+      this.listOfMutually['inclusive'] = [];
+      for (var rec in keys['both']) {
+        this.listOfMutually['inclusive'].push(keys['both'][rec]);
+      }
+  
+      // Exclusive left
+      if (this.listOfMutually['exclusiveLeft']) {
+        delete this.listOfMutually['exclusiveLeft'];
+      }
+      this.listOfMutually['exclusiveLeft'] = [];
+      for (var rec in keys['lhs']) {
+        this.listOfMutually['exclusiveLeft'].push(keys['lhs'][rec]);
+      }
+  
+      // Exclusive right
+      if (this.listOfMutually['exclusiveRight']) {
+        delete this.listOfMutually['exclusiveRight'];
+      }
+      this.listOfMutually['exclusiveRight'] = [];
+      for (var rec in keys['rhs']) {
+        this.listOfMutually['exclusiveRight'].push(keys['rhs'][rec]);
+      }
+      this.isResultApprovedCompareFetched = false;
+  }
+  /* GENCODE:MARKER:10:END */
 
   getCompareData() {
 
@@ -4250,55 +4282,29 @@ this.getResultSupplyCompare();
     });
   }
 
-  getResultApprovedCompare() {
-    //console.log("-->getResultApprovedCompare()");
-    this.portfolioSvc
-      .getPortfolioResultApproved(this.compareScenarioId, this.reqModel)
-      .subscribe(response => {
-        this.listOfApprovedCompare = response;
-        
-//===============================================================
-// TEMPLATE START: InclusiveExclusive.ts.4.1.tpl
-//===============================================================
-        if (this.listOfMutually['rhs']) {
-          delete this.listOfMutually['rhs'];
-        }
-        this.listOfMutually['rhs'] = {};
-        for (var rec in this.listOfApprovedCompare ) {
-          this.listOfMutually['rhs'][this.listOfApprovedCompare[rec].project_ID]=this.listOfApprovedCompare[rec];
-        }
-        var keys = this.compDict(this.listOfMutually['lhs'], this.listOfMutually['rhs']);
+  getResultApprovedCompare(): Promise<any> {
+    if (this.isResultApprovedCompareFetched) {
+      return Promise.resolve(this.listOfMutually['rhs']);
+    }
+  
+    return new Promise((resolve, reject) => {
+      this.portfolioSvc
+        .getPortfolioResultApproved(this.compareScenarioId, this.reqModel)
+        .subscribe(response => {
+          this.listOfApprovedCompare = response;
 
-        // Inclusive
-        if (this.listOfMutually['inclusive']) {
-          delete this.listOfMutually['inclusive'];
-        }
-        this.listOfMutually['inclusive'] = [];
-        for (var rec in keys['both']) {
-          this.listOfMutually['inclusive'].push(keys['both'][rec]);
-        }
+          if (this.listOfMutually['rhs']) {
+            delete this.listOfMutually['rhs'];
+          }
+          this.listOfMutually['rhs'] = {};
+          for (var rec in this.listOfApprovedCompare ) {
+            this.listOfMutually['rhs'][this.listOfApprovedCompare[rec].Project_ID]=this.listOfApprovedCompare[rec];
+          }
 
-        // Exclusive left
-        if (this.listOfMutually['exclusiveLeft']) {
-          delete this.listOfMutually['exclusiveLeft'];
-        }
-        this.listOfMutually['exclusiveLeft'] = [];
-        for (var rec in keys['lhs']) {
-          this.listOfMutually['exclusiveLeft'].push(keys['lhs'][rec]);
-        }
-
-        // Exclusive right
-        if (this.listOfMutually['exclusiveRight']) {
-          delete this.listOfMutually['exclusiveRight'];
-        }
-        this.listOfMutually['exclusiveRight'] = [];
-        for (var rec in keys['rhs']) {
-          this.listOfMutually['exclusiveRight'].push(keys['rhs'][rec]);
-        }
-//===============================================================
-// TEMPLATE END: InclusiveExclusive.ts.4.1.tpl
-//===============================================================
-      });
+          this.isResultApprovedCompareFetched = true;
+          resolve(this.listOfMutually['rhs']);
+        }, error => reject(error));
+    });
   }
 
   getResultRejectedCompare() {
@@ -4435,7 +4441,9 @@ this.getResultSupplyCompare();
   onTabSelected(event) {
     this.currentItemNo=event.rec.name;
     //console.log("parent -->", event);
-    this.getCompareData();
+    //this.getCompareData();
+    this.isResultApprovedCompareFetched = false;
+    this.doFetchAndCompare();
   }
 
   /* GENCODE:MARKER:7:START */
@@ -4701,13 +4709,6 @@ fetchComparisonPrioritisedGrid() {
     .getComparisonPrioritisedGrid(this.scenarioId, this.reqModel)
     .subscribe(response => {
       this.ComparisonPrioritisedGrid = response;
-      if (this.listOfMutually['lhs']) {
-          delete this.listOfMutually['lhs'];
-        }
-        this.listOfMutually['lhs'] = {};
-        for (var rec in this.listOfApproved) {
-          this.listOfMutually['lhs'][this.listOfApproved[rec].project_ID]=this.listOfApproved[rec];
-        }
     });
 }
 //===============================================================
@@ -4846,51 +4847,6 @@ fetchComparisonRightPrioritisedGrid() {
     .getComparisonRightPrioritisedGrid(this.compareScenarioId, this.reqModel)
     .subscribe(response => {
       this.ComparisonRightPrioritisedGrid = response;
-/* GENCODE:MARKER:10:START */
-
-//===============================================================
-// TEMPLATE START: InclusiveExclusive.ts.4.1.tpl
-//===============================================================
-        if (this.listOfMutually['rhs']) {
-          delete this.listOfMutually['rhs'];
-        }
-        this.listOfMutually['rhs'] = {};
-        for (var rec in this.ComparisonRightPrioritisedGrid ) {
-          this.listOfMutually['rhs'][this.ComparisonRightPrioritisedGrid[rec].project_ID]=this.ComparisonRightPrioritisedGrid[rec];
-        }
-        var keys = this.compDict(this.listOfMutually['lhs'], this.listOfMutually['rhs']);
-
-        // Inclusive
-        if (this.listOfMutually['inclusive']) {
-          delete this.listOfMutually['inclusive'];
-        }
-        this.listOfMutually['inclusive'] = [];
-        for (var rec in keys['both']) {
-          this.listOfMutually['inclusive'].push(keys['both'][rec]);
-        }
-
-        // Exclusive left
-        if (this.listOfMutually['exclusiveLeft']) {
-          delete this.listOfMutually['exclusiveLeft'];
-        }
-        this.listOfMutually['exclusiveLeft'] = [];
-        for (var rec in keys['lhs']) {
-          this.listOfMutually['exclusiveLeft'].push(keys['lhs'][rec]);
-        }
-
-        // Exclusive right
-        if (this.listOfMutually['exclusiveRight']) {
-          delete this.listOfMutually['exclusiveRight'];
-        }
-        this.listOfMutually['exclusiveRight'] = [];
-        for (var rec in keys['rhs']) {
-          this.listOfMutually['exclusiveRight'].push(keys['rhs'][rec]);
-        }
-//===============================================================
-// TEMPLATE END: InclusiveExclusive.ts.4.1.tpl
-//===============================================================
-
-        /* GENCODE:MARKER:10:END */
     });
 }
 //===============================================================

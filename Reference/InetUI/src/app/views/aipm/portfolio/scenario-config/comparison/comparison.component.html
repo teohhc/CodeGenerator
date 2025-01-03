@@ -599,7 +599,7 @@
 ===============================================================-->
 <app-tablegrid [title]="" 
 [freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
-[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[itemlist]="listOfMutually['inclusive']" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
 [columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
 [total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
@@ -625,7 +625,7 @@
 ===============================================================-->
 <app-tablegrid [title]="" 
 [freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
-[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[itemlist]="listOfMutually['exclusiveLeft']" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
 [columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
 [total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
@@ -645,7 +645,7 @@
 ===============================================================-->
 <app-tablegrid [title]="" 
 [freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
-[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[itemlist]="listOfMutually['exclusiveRight']" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
 [columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
 [total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
@@ -925,5 +925,5 @@
         </nz-collapse>
     </div>
 
-    <app-floatingbar [itemlist]="filterList" (tabSelect)="onTabSelected($event)"></app-floatingbar>
+    <app-floatingbar [itemlist]="filterList" [highlightNumber]="this.currentItemNo" (tabSelect)="onTabSelected($event)"></app-floatingbar>
 </div>

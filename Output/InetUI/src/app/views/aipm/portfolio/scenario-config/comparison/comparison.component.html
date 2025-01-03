@@ -202,7 +202,6 @@
 [total]="true" [totalRule]="ComparisonSummaryGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonSummaryGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonSummaryGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -222,7 +221,6 @@
 [total]="true" [totalRule]="ComparisonRightSummaryGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightSummaryGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightSummaryGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -464,7 +462,6 @@
 [total]="false" [totalRule]="ComparisonPrioritisedGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonPrioritisedGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonPrioritisedGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -484,7 +481,6 @@
 [total]="false" [totalRule]="ComparisonRightPrioritisedGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightPrioritisedGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightPrioritisedGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -509,7 +505,6 @@
 [total]="true" [totalRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonCategorizedPrio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -529,7 +524,6 @@
 [total]="true" [totalRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightCategorizedPrio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -553,7 +547,6 @@
 [total]="true" [totalRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonCategorizedPrio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -573,7 +566,6 @@
 [total]="true" [totalRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightCategorizedPrio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -595,18 +587,17 @@
 <!-- GENCODE:MARKER:5:START -->
 
 <!--===============================================================
-// TEMPLATE START: gridcomponent.html.2.4.tpl
+// TEMPLATE START: gridcomponent.html.2.6.tpl
 ===============================================================-->
 <app-tablegrid [title]="" 
 [freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
-[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[itemlist]="listOfMutually['inclusive']" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
 [columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
 [total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
 [actionRule]="InclusiveExclusiveDataGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
-// TEMPLATE END: gridcomponent.html.2.4.tpl
+// TEMPLATE END: gridcomponent.html.2.6.tpl
 ===============================================================-->
 
 <!-- GENCODE:MARKER:5:END -->
@@ -621,18 +612,17 @@
 <!-- GENCODE:MARKER:6:START -->
 
 <!--===============================================================
-// TEMPLATE START: gridcomponent.html.2.4.tpl
+// TEMPLATE START: gridcomponent.html.2.6.tpl
 ===============================================================-->
 <app-tablegrid [title]="" 
 [freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
-[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[itemlist]="listOfMutually['exclusiveLeft']" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
 [columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
 [total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
 [actionRule]="InclusiveExclusiveDataGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
-// TEMPLATE END: gridcomponent.html.2.4.tpl
+// TEMPLATE END: gridcomponent.html.2.6.tpl
 ===============================================================-->
 
             <!-- GENCODE:MARKER:6:END -->
@@ -641,18 +631,17 @@
             <!-- GENCODE:MARKER:7:START -->
 
 <!--===============================================================
-// TEMPLATE START: gridcomponent.html.2.4.tpl
+// TEMPLATE START: gridcomponent.html.2.6.tpl
 ===============================================================-->
 <app-tablegrid [title]="" 
 [freezeLeftList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['left']" [freezeRightList]="InclusiveExclusiveDataGridInfoCFGRule['freeze']['right']"
-[itemlist]="InclusiveExclusiveDataGrid" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
+[itemlist]="listOfMutually['exclusiveRight']" [formatList]="InclusiveExclusiveDataGridInfoCFGRule['format']"
 [columnHeader]="InclusiveExclusiveDataGridHdr" [mergeRule]="InclusiveExclusiveDataGridInfoCFGRule['mergeRule']" [seq]="true" [loading]="loading"
 [total]="false" [totalRule]="InclusiveExclusiveDataGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="InclusiveExclusiveDataGridInfoCFGRule['highlightRule']"
 [actionRule]="InclusiveExclusiveDataGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
-// TEMPLATE END: gridcomponent.html.2.4.tpl
+// TEMPLATE END: gridcomponent.html.2.6.tpl
 ===============================================================-->
 
             <!-- GENCODE:MARKER:7:END -->
@@ -676,7 +665,6 @@
 [total]="false" [totalRule]="ComparisonAlternateProjGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonAlternateProjGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonAlternateProjGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -696,7 +684,6 @@
 [total]="false" [totalRule]="ComparisonRightAlternateProjGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightAlternateProjGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightAlternateProjGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -718,7 +705,6 @@
 [total]="false" [totalRule]="ComparisonSupplyGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonSupplyGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonSupplyGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -738,7 +724,6 @@
 [total]="false" [totalRule]="ComparisonRightSupplyGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightSupplyGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightSupplyGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -782,7 +767,6 @@
 [total]="false" [totalRule]="ComparisonDeprioritizedGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonDeprioritizedGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonDeprioritizedGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -824,7 +808,6 @@
 [total]="false" [totalRule]="ComparisonRightDeprioritizedGridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightDeprioritizedGridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightDeprioritizedGridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -849,7 +832,6 @@
 [total]="true" [totalRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonCategorizedDeprio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -869,7 +851,6 @@
 [total]="true" [totalRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightCategorizedDeprio_1GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -893,7 +874,6 @@
 [total]="true" [totalRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonCategorizedDeprio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -913,7 +893,6 @@
 [total]="true" [totalRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['totalRule']"
 (eventTriggered)="onTableGridEvent($event)" [highlightRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['highlightRule']"
 [actionRule]="ComparisonRightCategorizedDeprio_2GridInfoCFGRule['actionRule']"></app-tablegrid>
-
 <!--===============================================================
 // TEMPLATE END: gridcomponent.html.2.4.tpl
 ===============================================================-->
@@ -925,5 +904,5 @@
         </nz-collapse>
     </div>
 
-    <app-floatingbar [itemlist]="filterList" (tabSelect)="onTabSelected($event)"></app-floatingbar>
+    <app-floatingbar [itemlist]="filterList" [highlightNumber]="this.currentItemNo" (tabSelect)="onTabSelected($event)"></app-floatingbar>
 </div>
